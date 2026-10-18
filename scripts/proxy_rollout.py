@@ -5,11 +5,12 @@ Credentials removed — supply your own via env or /tmp files as noted in README
 """Rollout: assign one sticky residential proxy per cline farm connection (1:1, 100 proxies)."""
 import json, os, sqlite3, sys, urllib.error, urllib.request
 
-MI = "http://127.0.0.1:20133"
-DB = "/home/belfara/9router-mibp/data/db/data.sqlite"
-COOKIE = open("/tmp/mibp_cookie.txt").read().strip()
-PF = "/home/belfara/ai-stack/farm/cline-farm/proxies.txt"
-BK = "/home/belfara/ai-stack/farm/cline-farm/backup-cline-state-2026-10-15.json"
+MI = os.environ.get("MIBP_MI", "http://127.0.0.1:20128")
+DB = os.environ.get("MIBP_DB", "/home/belfara/.9router/db/data.sqlite")
+_CK = os.environ.get("MIBP_COOKIE_FILE", "/tmp/mibp_cookie.txt")
+COOKIE = os.environ.get("MIBP_COOKIE") or (open(_CK).read().strip() if os.path.exists(_CK) else "")
+PF = os.environ.get("MIBP_PROXIES_FILE", "/home/belfara/ai-stack/farm/cline-farm/proxies.txt")
+BK = os.environ.get("MIBP_BACKUP_FILE", "/home/belfara/ai-stack/farm/cline-farm/backup-cline-state.json")
 APPLY = "--apply" in sys.argv
 
 

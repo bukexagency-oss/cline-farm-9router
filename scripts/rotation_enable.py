@@ -3,14 +3,16 @@
 Credentials removed — supply your own via env or /tmp files as noted in README.
 """
 """Enable round-robin for provider cline, then measure spread across connections/IPs."""
-import json, sqlite3, sys, time, urllib.error, urllib.request
+import json, os, sqlite3, sys, time, urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
-MI = "http://127.0.0.1:20133"
-DB = "/home/belfara/9router-mibp/data/db/data.sqlite"
-COOKIE = open("/tmp/mibp_cookie.txt").read().strip()
-KEY = open("/tmp/mibp_client_key.txt").read().strip()
-MODEL = "cl/anthropic/claude-sonnet-4.6"
+MI = os.environ.get("MIBP_MI", "http://127.0.0.1:20128")
+DB = os.environ.get("MIBP_DB", "/home/belfara/.9router/db/data.sqlite")
+_CK = os.environ.get("MIBP_COOKIE_FILE", "/tmp/mibp_cookie.txt")
+COOKIE = os.environ.get("MIBP_COOKIE") or (open(_CK).read().strip() if os.path.exists(_CK) else "")
+_KF = os.environ.get("MIBP_KEY_FILE", "/tmp/mibp_client_key.txt")
+KEY = os.environ.get("MIBP_KEY") or (open(_KF).read().strip() if os.path.exists(_KF) else "")
+MODEL = os.environ.get("MIBP_MODEL", "cl/anthropic/claude-sonnet-4.6")
 STICKY = int(sys.argv[1]) if len(sys.argv) > 1 else 1
 N = int(sys.argv[2]) if len(sys.argv) > 2 else 12
 

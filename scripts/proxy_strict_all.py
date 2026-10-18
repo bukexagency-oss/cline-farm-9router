@@ -3,11 +3,12 @@
 Credentials removed — supply your own via env or /tmp files as noted in README.
 """
 """Enable strictProxy on ALL 100 proxied farm connections (no host-IP leak possible)."""
-import json, sqlite3, sys, urllib.error, urllib.request
+import json, os, sqlite3, sys, urllib.error, urllib.request
 
-MI = "http://127.0.0.1:20133"
-DB = "/home/belfara/9router-mibp/data/db/data.sqlite"
-COOKIE = open("/tmp/mibp_cookie.txt").read().strip()
+MI = os.environ.get("MIBP_MI", "http://127.0.0.1:20128")
+DB = os.environ.get("MIBP_DB", "/home/belfara/.9router/db/data.sqlite")
+_CK = os.environ.get("MIBP_COOKIE_FILE", "/tmp/mibp_cookie.txt")
+COOKIE = os.environ.get("MIBP_COOKIE") or (open(_CK).read().strip() if os.path.exists(_CK) else "")
 APPLY = "--apply" in sys.argv
 
 

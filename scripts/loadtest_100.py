@@ -3,13 +3,13 @@
 Credentials removed — supply your own via env or /tmp files as noted in README.
 """
 """FINAL: 100 parallel requests. Prove they spread across ~100 distinct connections + proxies."""
-import json, sqlite3, sys, time, urllib.error, urllib.request
+import json, os, sqlite3, sys, time, urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
-MI = "http://127.0.0.1:20133"
-DB = "/home/belfara/9router-mibp/data/db/data.sqlite"
-KEY = open("/tmp/mibp_client_key.txt").read().strip()
-MODEL = "cl/anthropic/claude-sonnet-4.6"
+MI = os.environ.get("MIBP_MI", "http://127.0.0.1:20128")
+DB = os.environ.get("MIBP_DB", "/home/belfara/.9router/db/data.sqlite")
+KEY = open(os.environ.get("MIBP_KEY_FILE", "/tmp/mibp_client_key.txt")).read().strip()
+MODEL = os.environ.get("MIBP_MODEL", "cl/anthropic/claude-sonnet-4.6")
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 100
 WORKERS = int(sys.argv[2]) if len(sys.argv) > 2 else 20
 

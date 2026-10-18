@@ -19,6 +19,7 @@ docs/
 patches/
   0001-strict-proxy-legacy-connections.patch   # the upstream-worthy fix
 UPGRADE-AND-COMPAT.md         # old-repo problems -> fix, so a fresh install works
+DEPLOYMENT-NOTES.md           # rebuild 100-key farm (17Okt26): route changes + round-robin bug
 scripts/
   proxy_rollout.py             # assign one proxy per connection (idempotent)
   proxy_strict_all.py          # enable strictProxy on every proxied connection
